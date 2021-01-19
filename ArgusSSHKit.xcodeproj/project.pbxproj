@@ -25,6 +25,8 @@
 		93C5758425B67AE500B27635 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93C5758325B67AE500B27635 /* Main.storyboard */; };
 		93C5758825B67CA100B27635 /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = 93C5758725B67CA100B27635 /* NIOSSH */; };
 		93C5758B25B7456900B27635 /* TunnelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5758A25B7456900B27635 /* TunnelDelegate.swift */; };
+		93C5758F25B773A800B27635 /* ExecHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5758E25B773A800B27635 /* ExecHandler.swift */; };
+		93C5759225B7740D00B27635 /* ExecutionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5759125B7740D00B27635 /* ExecutionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		93C5757525B67ABE00B27635 /* Example_MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Example_MacOS.entitlements; sourceTree = "<group>"; };
 		93C5758325B67AE500B27635 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		93C5758A25B7456900B27635 /* TunnelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelDelegate.swift; sourceTree = "<group>"; };
+		93C5758E25B773A800B27635 /* ExecHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecHandler.swift; sourceTree = "<group>"; };
+		93C5759125B7740D00B27635 /* ExecutionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,7 @@
 				93C5754925B67A9B00B27635 /* ArgusSSHKit.h */,
 				93C5755425B67AAC00B27635 /* AcceptAllHostKeysDelegate.swift */,
 				93C5755225B67AAC00B27635 /* ErrorHandler.swift */,
+				93C5758E25B773A800B27635 /* ExecHandler.swift */,
 				93C5755A25B67AAC00B27635 /* GlueHandler.swift */,
 				93C5755525B67AAC00B27635 /* PortForwardingServer.swift */,
 				93C5755325B67AAC00B27635 /* SSHWrapperHandler.swift */,
@@ -128,6 +133,7 @@
 				93C5758A25B7456900B27635 /* TunnelDelegate.swift */,
 				93C5755825B67AAC00B27635 /* TunnelState.swift */,
 				93C5754A25B67A9B00B27635 /* Info.plist */,
+				93C5759125B7740D00B27635 /* ExecutionManager.swift */,
 			);
 			path = ArgusSSHKit;
 			sourceTree = "<group>";
@@ -274,9 +280,11 @@
 				93C5755E25B67AAC00B27635 /* PortForwardingServer.swift in Sources */,
 				93C5756125B67AAC00B27635 /* TunnelState.swift in Sources */,
 				93C5755B25B67AAC00B27635 /* ErrorHandler.swift in Sources */,
+				93C5758F25B773A800B27635 /* ExecHandler.swift in Sources */,
 				93C5755D25B67AAC00B27635 /* AcceptAllHostKeysDelegate.swift in Sources */,
 				93C5756325B67AAC00B27635 /* GlueHandler.swift in Sources */,
 				93C5756025B67AAC00B27635 /* TunnelManager.swift in Sources */,
+				93C5759225B7740D00B27635 /* ExecutionManager.swift in Sources */,
 				93C5755C25B67AAC00B27635 /* SSHWrapperHandler.swift in Sources */,
 				93C5756225B67AAC00B27635 /* TunnelAuthenticationDelegate.swift in Sources */,
 				93C5755F25B67AAC00B27635 /* TunnelError.swift in Sources */,

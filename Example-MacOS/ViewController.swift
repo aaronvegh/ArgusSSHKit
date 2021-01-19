@@ -15,20 +15,24 @@ class ViewController: NSViewController {
     @IBOutlet var passwordField: NSTextField!
     @IBOutlet var portsField: NSTextField!
     @IBOutlet var outputView: NSTextView!
+    @IBOutlet var serverPortField: NSTextField!
+    @IBOutlet var sshCommandField: NSTextField!
     
     var tunnelManager = TunnelManager()
-
+    var executionManager = ExecutionManager()
+    
     @IBAction func connect(sender: NSButton) {
-        let ports = portsField.stringValue.components(separatedBy: ",").compactMap({ Int($0.trimmingCharacters(in: .whitespaces)) })
-        for port in ports {
-            let localPort = Int.random(in: 1025..<36000)
-            outputView.textStorage?.append(NSAttributedString(string: "Opening \(localPort) -> \(port)\n"))
-            let tunnel = tunnelManager.createTunnel(hostname: serverField.stringValue, username: usernameField.stringValue, password: passwordField.stringValue, localPort: localPort, remotePort: port, delegate: self)
-            do {
-                try tunnel.start()
-            } catch(let error) {
-                print("Error connecting: \(error)")
+        if portsField.stringValue.count > 0 {
+            let ports = portsField.stringValue.components(separatedBy: ",").compactMap({ Int($0.trimmingCharacters(in: .whitespaces)) })
+            for port in ports {
+                let localPort = Int.random(in: 1025..<36000)
+                outputView.textStorage?.append(NSAttributedString(string: "Opening \(localPort) -> \(port)\n"))
+                let tunnel = tunnelManager.createTunnel(hostname: serverField.stringValue, username: usernameField.stringValue, password: passwordField.stringValue, localPort: localPort, remotePort: port, delegate: self)
+                tunnel.start()
             }
+        } else if sshCommandField.stringValue.count > 0 {
+            let exec = executionManager.createExecution(hostname: serverField.stringValue, username: usernameField.stringValue, password: passwordField.stringValue, command: sshCommandField.stringValue)
+            exec.start(command: sshCommandField.stringValue)
         }
     }
 
