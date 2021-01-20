@@ -10,5 +10,5 @@ import Foundation
 public protocol TunnelDelegateProtocol {
     func connectionOpened()
     func connectionClosed()
-    func connectionError(error: TunnelError)
+    func connectionError(error: Error)
 }

@@ -54,7 +54,7 @@ extension ViewController: TunnelDelegateProtocol {
         }
     }
     
-    func connectionError(error: TunnelError) {
+    func connectionError(error: Error) {
         DispatchQueue.main.async {
             self.outputView.textStorage?.append(NSAttributedString(string: "Error: \(error)\n"))
         }

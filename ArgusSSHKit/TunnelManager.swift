@@ -56,7 +56,7 @@ public class Tunnel: NSObject {
             }
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(IPPROTO_TCP), TCP_NODELAY), value: 1)
-
+        
         let channel = bootstrap.connect(host: hostname, port: 22)
         channel.whenFailure { error in
             print("Error setting up channel: \(error)")

@@ -31,15 +31,30 @@ final class PortForwardingServer {
     }
 
     func run() -> EventLoopFuture<Void> {
-        ServerBootstrap(group: self.serverLoop, childGroup: self.group)
+        let server = ServerBootstrap(group: self.serverLoop, childGroup: self.group)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .childChannelInitializer(self.forwardingChannelConstructor)
             .bind(host: self.bindHost, port: self.bindPort)
-            .flatMap {
-                self.delegate.connectionOpened()
-                self.serverChannel = $0
-                return $0.closeFuture
-            }
+        server.whenFailure { error in
+            print("Error: \(error)")
+        }
+        server.whenSuccess { channel in
+            print("Success!")
+        }
+        return server.flatMap { channel -> EventLoopFuture<Void> in
+            self.delegate.connectionOpened()
+            self.serverChannel = channel
+            return channel.closeFuture
+        }
+//            .flatMapError({ error -> EventLoopFuture<Channel> in
+//                print("Error: \(error)")
+//                return error as! EventLoopFuture<Channel>
+//            })
+//            .flatMap {
+//                self.delegate.connectionOpened()
+//                self.serverChannel = $0
+//                return $0.closeFuture
+//            }
     }
 
     func close() -> EventLoopFuture<Void> {
