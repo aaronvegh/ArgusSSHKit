@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		930F9BA025B9E8AA0096ED96 /* OutboundEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F9B9F25B9E8AA0096ED96 /* OutboundEventsHandler.swift */; };
+		930F9BA325B9E8BF0096ED96 /* InboundEventsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F9BA225B9E8BF0096ED96 /* InboundEventsHandler.swift */; };
 		93C5754B25B67A9B00B27635 /* ArgusSSHKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C5754925B67A9B00B27635 /* ArgusSSHKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93C5755B25B67AAC00B27635 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5755225B67AAC00B27635 /* ErrorHandler.swift */; };
 		93C5755C25B67AAC00B27635 /* SSHWrapperHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5755325B67AAC00B27635 /* SSHWrapperHandler.swift */; };
@@ -54,6 +56,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		930F9B9F25B9E8AA0096ED96 /* OutboundEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboundEventsHandler.swift; sourceTree = "<group>"; };
+		930F9BA225B9E8BF0096ED96 /* InboundEventsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboundEventsHandler.swift; sourceTree = "<group>"; };
 		93C5754625B67A9B00B27635 /* ArgusSSHKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ArgusSSHKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C5754925B67A9B00B27635 /* ArgusSSHKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArgusSSHKit.h; sourceTree = "<group>"; };
 		93C5754A25B67A9B00B27635 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 				93C5755825B67AAC00B27635 /* TunnelState.swift */,
 				93C5754A25B67A9B00B27635 /* Info.plist */,
 				93C5759125B7740D00B27635 /* ExecutionManager.swift */,
+				930F9B9F25B9E8AA0096ED96 /* OutboundEventsHandler.swift */,
+				930F9BA225B9E8BF0096ED96 /* InboundEventsHandler.swift */,
 			);
 			path = ArgusSSHKit;
 			sourceTree = "<group>";
@@ -277,8 +283,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				93C5758B25B7456900B27635 /* TunnelDelegate.swift in Sources */,
+				930F9BA325B9E8BF0096ED96 /* InboundEventsHandler.swift in Sources */,
 				93C5755E25B67AAC00B27635 /* PortForwardingServer.swift in Sources */,
 				93C5756125B67AAC00B27635 /* TunnelState.swift in Sources */,
+				930F9BA025B9E8AA0096ED96 /* OutboundEventsHandler.swift in Sources */,
 				93C5755B25B67AAC00B27635 /* ErrorHandler.swift in Sources */,
 				93C5758F25B773A800B27635 /* ExecHandler.swift in Sources */,
 				93C5755D25B67AAC00B27635 /* AcceptAllHostKeysDelegate.swift in Sources */,

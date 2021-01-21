@@ -11,7 +11,9 @@ import Foundation
 
 public enum TunnelError: Error {
     case passwordAuthenticationNotSupported
+    case privateKeyAuthenticationNotSupported
     case commandExecFailed
     case invalidChannelType
     case invalidData
+    case authenticationFailed
 }

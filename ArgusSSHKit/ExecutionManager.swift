@@ -43,7 +43,7 @@ public class Execution: NSObject {
     func connect() -> EventLoopFuture<Channel> {
         let bootstrap = ClientBootstrap(group: group)
             .channelInitializer { [self] channel in
-                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password)
+                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password, privateKeyFile: nil, privateKeyPassword: nil)
                 let serverAuthDelegate = AcceptAllHostKeysDelegate()
                 return channel.pipeline.addHandlers([NIOSSHHandler(role: .client(.init(userAuthDelegate: userAuthDelegate, serverAuthDelegate: serverAuthDelegate)), allocator: channel.allocator, inboundChildChannelInitializer: nil), ErrorHandler()])
             }

@@ -50,9 +50,9 @@ public class Tunnel: NSObject {
     func connect() -> EventLoopFuture<Channel> {
         let bootstrap = ClientBootstrap(group: group)
             .channelInitializer { [self] channel in
-                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password)
+                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password, privateKeyFile: nil, privateKeyPassword: nil)
                 let serverAuthDelegate = AcceptAllHostKeysDelegate()
-                return channel.pipeline.addHandlers([NIOSSHHandler(role: .client(.init(userAuthDelegate: userAuthDelegate, serverAuthDelegate: serverAuthDelegate)), allocator: channel.allocator, inboundChildChannelInitializer: nil), ErrorHandler()])
+                return channel.pipeline.addHandlers([NIOSSHHandler(role: .client(.init(userAuthDelegate: userAuthDelegate, serverAuthDelegate: serverAuthDelegate)), allocator: channel.allocator, inboundChildChannelInitializer: nil), DebugInboundEventsHandler(), DebugOutboundEventsHandler(), ErrorHandler()])
             }
             .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
             .channelOption(ChannelOptions.socket(SocketOptionLevel(IPPROTO_TCP), TCP_NODELAY), value: 1)
