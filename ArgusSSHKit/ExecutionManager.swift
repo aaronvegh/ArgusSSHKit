@@ -13,19 +13,17 @@ public class Execution: NSObject {
     let group: EventLoopGroup
     
     let hostname: String
-    let username: String
-    let password: String
+    let authentication: SSHAuthenticationMethod
     
     let command: String
     
     var server: PortForwardingServer?
     var channel: Channel?
     
-    public init(group: EventLoopGroup, hostname: String, username: String, password: String, command: String) {
+    public init(group: EventLoopGroup, hostname: String, authentication: SSHAuthenticationMethod, command: String) {
         self.group = group
         self.hostname = hostname
-        self.username = username
-        self.password = password
+        self.authentication = authentication
         
         self.command = command
     }
@@ -43,7 +41,7 @@ public class Execution: NSObject {
     func connect() -> EventLoopFuture<Channel> {
         let bootstrap = ClientBootstrap(group: group)
             .channelInitializer { [self] channel in
-                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password, privateKeyFile: nil, privateKeyPassword: nil)
+                let userAuthDelegate = TunnelAuthenticationDelegate(authentication: authentication)
                 let serverAuthDelegate = AcceptAllHostKeysDelegate()
                 return channel.pipeline.addHandlers([NIOSSHHandler(role: .client(.init(userAuthDelegate: userAuthDelegate, serverAuthDelegate: serverAuthDelegate)), allocator: channel.allocator, inboundChildChannelInitializer: nil), ErrorHandler()])
             }
@@ -86,8 +84,8 @@ public class Execution: NSObject {
 public class ExecutionManager: NSObject {
     let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     
-    public func createExecution(hostname: String, username: String, password: String, command: String) -> Execution {
-        let exec = Execution(group: group, hostname: hostname, username: username, password: password, command: command)
+    public func createExecution(hostname: String, authentication: SSHAuthenticationMethod, command: String) -> Execution {
+        let exec = Execution(group: group, hostname: hostname, authentication: authentication, command: command)
         return exec
     }
 }

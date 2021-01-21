@@ -11,21 +11,37 @@ import Foundation
 import NIO
 import NIOSSH
 
+public enum SSHAuthenticationType {
+    case password
+    case publicKey
+}
+
+public class SSHAuthenticationMethod: NSObject {
+    let authType: SSHAuthenticationType
+    let username: String
+    
+    let password: String?
+    let publicKeyFile: String?
+    let publicKeyPassword: String?
+    
+    public init(authType: SSHAuthenticationType, username: String, password: String?, publicKeyFile: String?, publicKeyPassword: String?) {
+        self.authType = authType
+        self.username = username
+        self.password = password
+        self.publicKeyFile = publicKeyFile
+        self.publicKeyPassword = publicKeyPassword
+        super.init()
+    }
+}
 
 final class TunnelAuthenticationDelegate: NIOSSHClientUserAuthenticationDelegate {
-    private var username: String
-    private var password: String?
-    private var privateKeyFile: String?
-    private var privateKeyPassword: String?
+    private var authentication: SSHAuthenticationMethod
     
     private var attemptedPassword: Bool = false
     private var attemptedPrivateKey: Bool = false
 
-    init(username: String, password: String?, privateKeyFile: String?, privateKeyPassword: String?) {
-        self.username = username
-        self.password = password
-        self.privateKeyFile = privateKeyFile
-        self.privateKeyPassword = privateKeyPassword
+    init(authentication: SSHAuthenticationMethod) {
+        self.authentication = authentication
     }
 
     func nextAuthenticationType(availableMethods: NIOSSHAvailableUserAuthenticationMethods, nextChallengePromise: EventLoopPromise<NIOSSHUserAuthenticationOffer?>) {
@@ -34,20 +50,20 @@ final class TunnelAuthenticationDelegate: NIOSSHClientUserAuthenticationDelegate
             return
         }
         
-        if let privateKeyFile = self.privateKeyFile, !attemptedPrivateKey {
+        switch authentication.authType {
+        case .password:
+            guard let password = authentication.password else { nextChallengePromise.fail(TunnelError.authenticationFailed)
+                return
+            }
+            let offer = NIOSSHUserAuthenticationOffer(username: self.authentication.username, serviceName: "", offer: .password(.init(password: password)))
+            nextChallengePromise.succeed(offer)
+            return
+        case .publicKey:
             // TODO: figure out how to handle private keys.
             // SwiftNIO doesn't handle OpenSSH keys?!
-            attemptedPrivateKey = true
-            print("Has \(privateKeyFile)")
-            nextChallengePromise.fail(TunnelError.privateKeyAuthenticationNotSupported)
+            break
         }
-        
-        if let password = self.password, !attemptedPassword {
-            attemptedPassword = true
-            let offer = NIOSSHUserAuthenticationOffer(username: self.username, serviceName: "", offer: .password(.init(password: password)))
-            nextChallengePromise.succeed(offer)
-        }
-        
+    
         nextChallengePromise.fail(TunnelError.authenticationFailed)
     }
 }

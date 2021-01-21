@@ -16,8 +16,7 @@ public class Tunnel: NSObject {
     let group: EventLoopGroup
     
     let hostname: String
-    let username: String
-    let password: String
+    let authentication: SSHAuthenticationMethod
     
     let localPort: Int
     let remotePort: Int
@@ -26,11 +25,10 @@ public class Tunnel: NSObject {
     var channel: Channel?
     var delegate: TunnelDelegateProtocol
     
-    init(group: EventLoopGroup, hostname: String, username: String, password: String, localPort: Int, remotePort: Int, delegate: TunnelDelegateProtocol) {
+    init(group: EventLoopGroup, hostname: String, authentication: SSHAuthenticationMethod, localPort: Int, remotePort: Int, delegate: TunnelDelegateProtocol) {
         self.group = group
         self.hostname = hostname
-        self.username = username
-        self.password = password
+        self.authentication = authentication
         
         self.localPort = localPort
         self.remotePort = remotePort
@@ -50,7 +48,7 @@ public class Tunnel: NSObject {
     func connect() -> EventLoopFuture<Channel> {
         let bootstrap = ClientBootstrap(group: group)
             .channelInitializer { [self] channel in
-                let userAuthDelegate = TunnelAuthenticationDelegate(username: username, password: password, privateKeyFile: nil, privateKeyPassword: nil)
+                let userAuthDelegate = TunnelAuthenticationDelegate(authentication: authentication)
                 let serverAuthDelegate = AcceptAllHostKeysDelegate()
                 return channel.pipeline.addHandlers([NIOSSHHandler(role: .client(.init(userAuthDelegate: userAuthDelegate, serverAuthDelegate: serverAuthDelegate)), allocator: channel.allocator, inboundChildChannelInitializer: nil), DebugInboundEventsHandler(), DebugOutboundEventsHandler(), ErrorHandler()])
             }
@@ -98,8 +96,8 @@ public class TunnelManager: NSObject {
     let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     let delegate: TunnelDelegateProtocol? = nil
 
-    public func createTunnel(hostname: String, username: String, password: String, localPort: Int, remotePort: Int, delegate: TunnelDelegateProtocol) -> Tunnel {
-        let tunnel = Tunnel(group: self.group, hostname: hostname, username: username, password: password, localPort: localPort, remotePort: remotePort, delegate: delegate)
+    public func createTunnel(hostname: String, authentication: SSHAuthenticationMethod, localPort: Int, remotePort: Int, delegate: TunnelDelegateProtocol) -> Tunnel {
+        let tunnel = Tunnel(group: self.group, hostname: hostname, authentication: authentication, localPort: localPort, remotePort: remotePort, delegate: delegate)
         tunnels[remotePort] = tunnel
         return tunnel
     }

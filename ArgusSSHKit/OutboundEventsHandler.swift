@@ -88,11 +88,11 @@ public class DebugOutboundEventsHandler: ChannelOutboundHandler {
         case .connect(let address):
             message = "Connecting to \(address)"
         case .write(let data):
-            message = "Writing \(data)"
+            message = "Outbound Writing \(data)"
         case .flush:
             message = "Flushing"
         case .read:
-            message = "Reading"
+            message = "Outbound Reading"
         case .close(let mode):
             message = "Closing with mode \(mode)"
             print()

@@ -22,16 +22,19 @@ class ViewController: NSViewController {
     var executionManager = ExecutionManager()
     
     @IBAction func connect(sender: NSButton) {
+        let auth = SSHAuthenticationMethod(authType: .password, username: self.usernameField.stringValue, password: self.passwordField.stringValue, publicKeyFile: nil, publicKeyPassword: nil)
+        
         if portsField.stringValue.count > 0 {
             let ports = portsField.stringValue.components(separatedBy: ",").compactMap({ Int($0.trimmingCharacters(in: .whitespaces)) })
             for port in ports {
                 let localPort = Int.random(in: 1025..<36000)
                 outputView.textStorage?.append(NSAttributedString(string: "Opening \(localPort) -> \(port)\n"))
-                let tunnel = tunnelManager.createTunnel(hostname: serverField.stringValue, username: usernameField.stringValue, password: passwordField.stringValue, localPort: localPort, remotePort: port, delegate: self)
+                
+                let tunnel = tunnelManager.createTunnel(hostname: serverField.stringValue, authentication: auth, localPort: localPort, remotePort: port, delegate: self)
                 tunnel.start()
             }
         } else if sshCommandField.stringValue.count > 0 {
-            let exec = executionManager.createExecution(hostname: serverField.stringValue, username: usernameField.stringValue, password: passwordField.stringValue, command: sshCommandField.stringValue)
+            let exec = executionManager.createExecution(hostname: serverField.stringValue, authentication: auth, command: sshCommandField.stringValue)
             exec.start(command: sshCommandField.stringValue)
         }
     }
